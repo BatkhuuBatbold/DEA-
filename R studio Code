@@ -1,0 +1,45 @@
+1 дэх хувилбар
+rm(list=ls())
+library(openxlsx)
+library(Benchmarking)
+#install.packages("readxl")
+#install.packages("writexl")
+#install.packages("data.frame")
+library(readxl)
+library(writexl)
+
+
+ccr <- read.xlsx("C:/Users/123ba/OneDrive/Desktop/InOut.xlsx", sheet = "IO")
+
+x <- with(ccr, cbind(ESCS,STRATIO,RATCMP1,STUDYHMW))
+y <- with(ccr, cbind(PV_AVE_MATH,PV_AVE_READ,PV_AVE_SCIE))
+
+dea.plot(x,y, main="Үйлдвэрлэлийн функц", RTS ="vrs")
+e_vrs <- dea(x,y,RTS="vrs",ORIENTATION="in")
+e_crs <- dea(x,y,RTS="crs",ORIENTATION="in")
+summary(e_vrs)
+summary(e_crs)
+
+e_vrs
+
+
+2 дахь хувилбар
+
+install.packages("deaR")
+library(openxlsx)
+ccr_data_file <- read.xlsx("C:/Users/123ba/OneDrive/Desktop/InOut.xlsx", sheet = "IO")
+View(ccr_data_file)
+require(deaR)
+ccr_model <- make_deadata(ccr_data_file, ni = 4, no = 3, dmus = 1, inputs = 2:5, outputs = 6:8)
+result_ccr<-model_basic(ccr_model, orientation ="io", rts = "vrs", dmu_eval = 1:178, dmu_ref = 1:178)
+result_ccr
+efficiencies(result_ccr)
+targets(result_ccr)
+eff<-efficiencies(result_ccr)
+summary(eff)
+tar<- targets(result_ccr)
+write.csv(eff, "eff.csv")
+write.csv(tar,"tar.csv")
+summary(result_ccr)
+plot(result_ccr)
+
